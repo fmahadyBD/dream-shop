@@ -1,14 +1,21 @@
 package com.fahim.shoppingcard.services.product;
 
 import com.fahim.shoppingcard.model.Product;
+import com.fahim.shoppingcard.request.AddProductRequest;
+import com.fahim.shoppingcard.request.UpdateProductRequest;
 
 import java.util.List;
 
+/*
+ Why use IProductService:
+
+ */
+
 public interface IProductService {
-    Product addProduct(Product product);
+    Product addProduct(AddProductRequest product);
     Product getProduct(Long id);
     void deleteProduct(Long id);
-    void updateProduct(Product product, Long productId);
+    Product updateProduct(UpdateProductRequest existingProduct, Long productId);
     List<Product> getAllProducts();
     List<Product> getProductsByCategory(String category);
     List<Product> getProductsByBrand(String brand);

@@ -1,12 +1,15 @@
 package com.fahim.shoppingcard.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Category {
 
     @Id
@@ -15,4 +18,9 @@ public class Category {
     private String name;
     @OneToMany(mappedBy = "category")
     private List<Product> products;
+
+    public Category(String name) {
+    this.name = name;
+    }
+
 }
