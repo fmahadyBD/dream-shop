@@ -48,26 +48,40 @@ public class ImageService implements  IImageService{
     public List<ImageDto> saveImages(List<MultipartFile> files, Long productId) {
         Product product = productService.getProduct(productId);
         List<ImageDto> savedImageDto = new ArrayList<>();
+        //we work with one more++ images that why we need to use the for loop
         for(MultipartFile file : files){
             try{
+
+                /*
+                Image have properties:
+                    1. image filename
+                    2. image file type
+                    3.image blob
+                    4. image download url
+                    5. relation with product with product_id is
+
+                 */
                 Image image = new Image();
                 image.setFileName(file.getOriginalFilename());
                 image.setFileType(file.getContentType());
                 image.setImage(new SerialBlob(file.getBytes()));
                 image.setProduct(product);
 
+                //download url path
                 String buildDownloadUrl="api/v1/images/image/download";
+
                 String downloadUrl= buildDownloadUrl+image.getId();
                 image.setDownloadUrl(downloadUrl);
+
+                // we now saved image to database
                 Image savedImage=  imageRepository.save(image);
 
+                // we don't want to return original image. that's why we return a dto image form the saved image.
                 ImageDto imageDto = new ImageDto();
                 imageDto.setImageId( savedImage.getId());
                 imageDto.setImageName(savedImage.getFileName());
                 imageDto.setDownloadUrl(savedImage.getDownloadUrl());
                 savedImageDto.add(imageDto);
-
-
 
             }catch (RuntimeException | SQLException | IOException e){
                 throw  new RuntimeException(e.getMessage());
