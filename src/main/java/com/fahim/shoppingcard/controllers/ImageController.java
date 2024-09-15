@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.sql.SQLException;
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/images")
@@ -30,11 +32,8 @@ public class ImageController {
             //problem in 1:48:*
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!",e.getMessage()));
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!",e.getMessage()));
         }
-
-
-
     }
 
     @GetMapping("/image/download/{imageId}")
@@ -53,28 +52,25 @@ public class ImageController {
             Image image = imageService.getImageById(imageId);
             if(image!=null){
                 imageService.updateImage(file,imageId);
-                return ResponseEntity.ok(new ApiResponse("Update Successful",""));
+                return ResponseEntity.ok(new ApiResponse("Update Successful",null));
             }
         }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Update failed!",""));
-//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error",TERNAL_SERVER_ERROR));
-
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Update failed!",INTERNAL_SERVER_ERROR));
     }
+
     @DeleteMapping("image/{imageId}/delete")
     public ResponseEntity<ApiResponse> deleteImage(@PathVariable Long imageId){
         try{
             Image image = imageService.getImageById(imageId);
             if(image!=null){
                 imageService.deleteImageById(imageId);
-                return ResponseEntity.ok(new ApiResponse("Delete Successful",""));
+                return ResponseEntity.ok(new ApiResponse("Delete Successful",null));
             }
         }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Delete failed!",""));
-//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error",TERNAL_SERVER_ERROR));
-
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Delete failed!",INTERNAL_SERVER_ERROR));
     }
 }
