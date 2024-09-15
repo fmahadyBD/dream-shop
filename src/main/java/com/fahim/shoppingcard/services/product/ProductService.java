@@ -50,46 +50,19 @@ public class ProductService implements IProductService {
                 category
         );
     }
-
-
-    @Override
-    public Product getProduct(Long id) {
-        return productRepository.findById(id).orElseThrow(()-> new ProductNotFoundException("Product Not Found"));
-    }
-
-    @Override
-    public void deleteProduct(Long id) {
-
-        productRepository.findById(id)
-                .ifPresentOrElse(productRepository::delete,
-                        ()->{throw new ProductNotFoundException("Product Not Found");});
-
-    }
-
-    @Override
-    public Product updateProduct(UpdateProductRequest request, Long productId) {
-    return productRepository.findById(productId)
-            .map(existingProduct-> updateExistingProduct(existingProduct,request))
-                    .map(productRepository::save).orElseThrow(()->new ResourceNotFoundException("Product not found!"));
-
-
-    }
-
-    public Product updateExistingProduct(Product existingProduct, UpdateProductRequest request) {
-        existingProduct.setName(request.getName());
-        existingProduct.setPrice(request.getPrice());
-        existingProduct.setBrand(request.getBrand());
-        existingProduct.setInventory(request.getInventory());
-        existingProduct.setDescription(request.getDescription());
-        Category existingCategory=categoryRepository.findByName(request.getCategory().getName());
-        existingProduct.setCategory(existingCategory);
-
-        return existingProduct;
-
-    }
     @Override
     public List<Product> getAllProducts() {
         return productRepository.findAll();
+    }
+
+    @Override
+    public Product getProductById(Long id) {
+        return productRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Product Not Found"));
+    }
+
+    @Override
+    public List<Product> getProductsByName(String name) {
+        return productRepository.findByName(name);
     }
 
     @Override
@@ -108,11 +81,6 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<Product> getProductsByName(String name) {
-        return productRepository.findByName(name);
-    }
-
-    @Override
     public List<Product> getProductsByBrandAndName(String brand, String name) {
         return productRepository.findByBrandAndName(brand,name);
     }
@@ -125,5 +93,33 @@ public class ProductService implements IProductService {
     @Override
     public Long countProductsByBrandAndName(String brand, String name) {
         return productRepository.countByBrandAndName(brand,name);
+    }
+
+    @Override
+    public Product updateProduct(UpdateProductRequest request, Long productId) {
+        return productRepository.findById(productId)
+                .map(existingProduct-> updateExistingProduct(existingProduct,request))
+                .map(productRepository::save).orElseThrow(()->new ResourceNotFoundException("Product not found!"));
+
+    }
+    @Override
+    public void deleteProduct(Long id) {
+
+        productRepository.findById(id)
+                .ifPresentOrElse(productRepository::delete,
+                        ()->{throw new ResourceNotFoundException("Product Not Found");});
+
+    }
+    public Product updateExistingProduct(Product existingProduct, UpdateProductRequest request) {
+        existingProduct.setName(request.getName());
+        existingProduct.setPrice(request.getPrice());
+        existingProduct.setBrand(request.getBrand());
+        existingProduct.setInventory(request.getInventory());
+        existingProduct.setDescription(request.getDescription());
+        Category existingCategory=categoryRepository.findByName(request.getCategory().getName());
+        existingProduct.setCategory(existingCategory);
+
+        return existingProduct;
+
     }
 }
