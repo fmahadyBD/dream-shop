@@ -1,5 +1,6 @@
 package com.fahim.shoppingcard.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,6 +17,8 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
+
+    @JsonIgnore // it will break the loop
     @OneToMany(mappedBy = "category")
     private List<Product> products;
 

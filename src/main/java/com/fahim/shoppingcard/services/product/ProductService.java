@@ -1,14 +1,18 @@
 package com.fahim.shoppingcard.services.product;
 
-import com.fahim.shoppingcard.exceptions.ProductNotFoundException;
+import com.fahim.shoppingcard.dto.ImageDto;
+import com.fahim.shoppingcard.dto.ProductDto;
 import com.fahim.shoppingcard.exceptions.ResourceNotFoundException;
 import com.fahim.shoppingcard.model.Category;
+import com.fahim.shoppingcard.model.Image;
 import com.fahim.shoppingcard.model.Product;
 import com.fahim.shoppingcard.repository.CategoryRepository;
+import com.fahim.shoppingcard.repository.ImageRepository;
 import com.fahim.shoppingcard.repository.ProductRepository;
 import com.fahim.shoppingcard.request.AddProductRequest;
 import com.fahim.shoppingcard.request.UpdateProductRequest;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 
@@ -22,6 +26,8 @@ public class ProductService implements IProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ModelMapper modelMapper;
+    private final ImageRepository  imageRepository;
 
     @Override
     public Product addProduct(AddProductRequest request) {
@@ -121,5 +127,19 @@ public class ProductService implements IProductService {
 
         return existingProduct;
 
+    }
+
+
+    @Override
+    public List<ProductDto> getConvertedProducts(List<Product> products) {
+        return products.stream().map(this::getConvertedToDto).toList();
+    }
+    @Override
+    public ProductDto getConvertedToDto(Product product){
+        ProductDto productDto = modelMapper.map(product,ProductDto.class);
+        List<Image> images = imageRepository.findByProductId(product.getId());
+        List<ImageDto> imageDtos=images.stream().map(imageDto->modelMapper.map(images,ImageDto.class)).toList();
+        productDto.setImages(imageDtos);
+        return productDto;
     }
 }

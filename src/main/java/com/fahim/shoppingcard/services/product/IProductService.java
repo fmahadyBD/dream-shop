@@ -1,5 +1,6 @@
 package com.fahim.shoppingcard.services.product;
 
+import com.fahim.shoppingcard.dto.ProductDto;
 import com.fahim.shoppingcard.model.Product;
 import com.fahim.shoppingcard.request.AddProductRequest;
 import com.fahim.shoppingcard.request.UpdateProductRequest;
@@ -25,4 +26,7 @@ public interface IProductService {
     void deleteProduct(Long id);
     Product updateProduct(UpdateProductRequest existingProduct, Long productId);
 
+    List<ProductDto> getConvertedProducts(List<Product> products);
+
+    ProductDto getConvertedToDto(Product product);
 }

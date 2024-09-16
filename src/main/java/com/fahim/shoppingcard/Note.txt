@@ -1,0 +1,11 @@
+http://localhost:8080/api/v1/product/all
+
+http://localhost:8080/api/v1/products/add
+    {
+        "name": "Mobile",
+        "price":10,
+        "brand": "Apple",
+        "inventory":1,
+        "description":"none",
+        "category":"mobile"
+    }

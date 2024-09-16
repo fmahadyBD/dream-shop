@@ -46,7 +46,7 @@ public class ImageService implements  IImageService{
 
     @Override
     public List<ImageDto> saveImages(List<MultipartFile> files, Long productId) {
-        Product product = productService.getProduct(productId);
+        Product product = productService.getProductById(productId);
         List<ImageDto> savedImageDto = new ArrayList<>();
         //we work with one more++ images that why we need to use the for loop
         for(MultipartFile file : files){
