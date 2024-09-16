@@ -19,7 +19,6 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
-// @RequestMapping("${api.prefix}/product")
 @RequestMapping("${api.prefix}/products")
 public class ProductController {
 
@@ -75,7 +74,7 @@ public class ProductController {
         try{
             Product product = productService.getProductById(ProductId);
             ProductDto productDto = productService.getConvertedToDto(product);
-            return ResponseEntity.ok(new ApiResponse("Found! ", productDto));
+            return ResponseEntity.ok(new ApiResponse("Found! ",productDto));
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse( e.getMessage(),null));
         }

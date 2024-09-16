@@ -138,7 +138,10 @@ public class ProductService implements IProductService {
     public ProductDto getConvertedToDto(Product product){
         ProductDto productDto = modelMapper.map(product,ProductDto.class);
         List<Image> images = imageRepository.findByProductId(product.getId());
-        List<ImageDto> imageDtos=images.stream().map(imageDto->modelMapper.map(images,ImageDto.class)).toList();
+        List<ImageDto> imageDtos=images.stream()
+                .map(image->modelMapper.
+                        map(image,ImageDto.class)).toList();
+
         productDto.setImages(imageDtos);
         return productDto;
     }
