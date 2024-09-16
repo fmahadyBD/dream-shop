@@ -26,14 +26,10 @@ import java.util.List;
 public class ImageService implements  IImageService{
 
     private final ImageRepository imageRepository;
-    private final IProductService  iProductService;
-    private final ProductRepository productRepository;
-    private final ProductService productService;
-
+    private final IProductService  productService;
     @Override
     public Image getImageById(Long id) {
         return imageRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Image not found with is id"+id));
-
 
     }
 
@@ -68,18 +64,18 @@ public class ImageService implements  IImageService{
                 image.setProduct(product);
 
                 //download url path
-                String buildDownloadUrl="api/v1/images/image/download";
-
+                String buildDownloadUrl="/api/v1/images/image/download/";
                 String downloadUrl= buildDownloadUrl+image.getId();
                 image.setDownloadUrl(downloadUrl);
-
                 // we now saved image to database
                 Image savedImage=  imageRepository.save(image);
 
+                savedImage.setDownloadUrl(buildDownloadUrl+savedImage.getId());
+
                 // we don't want to return original image. that's why we return a dto image form the saved image.
                 ImageDto imageDto = new ImageDto();
-                imageDto.setImageId( savedImage.getId());
-                imageDto.setImageName(savedImage.getFileName());
+                imageDto.setId( savedImage.getId());
+                imageDto.setFileName(savedImage.getFileName());
                 imageDto.setDownloadUrl(savedImage.getDownloadUrl());
                 savedImageDto.add(imageDto);
 
