@@ -3,6 +3,7 @@ package com.fahim.shoppingcard.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
-    private BigInteger price;
+    private BigDecimal price;
     private String brand;
     private int inventory;
     private String description;
@@ -28,7 +29,7 @@ public class Product {
     private List<Image> images;
 
 
-    public Product(String name, BigInteger price, String brand, int inventory, String description, Category category) {
+    public Product(String name, BigDecimal price, String brand, int inventory, String description, Category category) {
         this.name = name;
         this.price = price;
         this.brand = brand;

@@ -10,4 +10,8 @@ public interface ICartService {
 
     void clearCart(Long id);
     BigDecimal getTotalPrice(Long id);
+
+    long initializedNewCart();
+
+    Cart getCartByUserIf(Long userId);
 }
