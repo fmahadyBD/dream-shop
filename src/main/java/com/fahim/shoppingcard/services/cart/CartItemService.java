@@ -68,7 +68,6 @@ public class CartItemService implements ICartItemService {
     public void updateItemQuantity(Long cartId, Long productId, int quantity) {
         Cart cart = cartService.getCart(cartId);
         cart.getItems().stream()
-//                .filter(item->item.getProduct().getId().equals(productId))
                 .filter(item -> item.getProduct().getId().equals(productId)) // problem on equals
                 .findFirst()
                 .ifPresent(item->
@@ -94,5 +93,5 @@ public class CartItemService implements ICartItemService {
                 .filter(item -> item.getProduct().getId().equals(productId))
                 .findFirst().orElseThrow(() -> new ResourceNotFoundException("Item not found"));
     }
-    }
+
 }
