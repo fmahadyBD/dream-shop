@@ -31,11 +31,11 @@ public class ProductService implements IProductService {
 
     @Override
     public Product addProduct(AddProductRequest request) {
-        // check if the category is found in the DB
-        // If Yes, set it as the new product category
-        // If No, the save it as a new category
-        // The set as the new product category.
-
+       /*         check if the category is found in the DB
+                  If Yes, set it as the new product category
+                 If No, the save it as a new category
+                 The set as the new product category.
+        */
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
                 .orElseGet(()-> {
                             Category newCategory = new Category(request.getCategory().getName());
