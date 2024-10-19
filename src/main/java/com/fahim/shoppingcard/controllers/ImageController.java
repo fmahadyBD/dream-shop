@@ -20,7 +20,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prefix}/images")
+@RequestMapping("${api.prefix.admin}/images")
 public class ImageController {
     private final IImageService imageService;
 

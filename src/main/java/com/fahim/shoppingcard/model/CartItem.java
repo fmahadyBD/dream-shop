@@ -1,5 +1,6 @@
 package com.fahim.shoppingcard.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore; // Include this import for @JsonIgnore
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,21 +18,20 @@ public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private  int quantity;
+    private int quantity;
     private BigDecimal unitPrice;
     private BigDecimal totalPrice;
-
 
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @JsonIgnore // Add this annotation to ignore the cart in JSON serialization
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
-    private  Cart cart;
+    private Cart cart;
 
     public void setTotalPrice() {
-        this.totalPrice=this.unitPrice.multiply(new BigDecimal(quantity));
+        this.totalPrice = this.unitPrice.multiply(new BigDecimal(quantity));
     }
-
 }
