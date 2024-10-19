@@ -34,12 +34,4 @@ build/
 
 
 
-### package ######
 
-src/main/java/com/fahim/shoppingcard/enums/
-
-
-### Files #####
-
-src/main/java/com/fahim/shoppingcard/enums/UserRole.java
-src/main/java/com/fahim/shoppingcard/model/MyUser.java
