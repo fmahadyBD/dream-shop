@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,7 +21,7 @@ public class Category {
 
     @JsonIgnore // it will break the loop
     @OneToMany(mappedBy = "category")
-    private List<Product> products;
+    private List<Product> products=new ArrayList<>();
 
     public Category(String name) {
     this.name = name;

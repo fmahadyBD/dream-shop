@@ -20,7 +20,16 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequestMapping("${api.prefix.admin}/products")
 public class ProductController {
 
+    /**
+     * We don't need to give Constructor because we already define it with anotation
+     * */
     private final IProductService productService;
+
+    /** We define with this api by ResponseEntry with class of ApiResponse.
+     * Api Response have String Message and Object Data
+     * We take a request class to fetch data. sent it into the service
+     * We have Product to Dto converter in the service class. so we convert it and return as reponse
+     * */
 
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addProduct(@RequestBody AddProductRequest addProductRequest) {
@@ -33,6 +42,17 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse> getAllProducts() {
+        try {
+            List<Product> products = productService.getAllProducts();
+            List<ProductDto> productDtoList = productService.getConvertedProducts(products);
+            return ResponseEntity.ok(new ApiResponse("Found! ", productDtoList));
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
+        }
+
+    }
     @DeleteMapping("/product/{productId}/delete")
     public ResponseEntity<ApiResponse> deleteProductById(@PathVariable Long productId) {
         try {
@@ -54,17 +74,10 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<ApiResponse> getAllProducts() {
-        try {
-            List<Product> products = productService.getAllProducts();
-            List<ProductDto> productDtoList = productService.getConvertedProducts(products);
-            return ResponseEntity.ok(new ApiResponse("Found! ", productDtoList));
-        } catch (Exception e) {
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
-        }
 
-    }
+    /**
+     * We get the product by it's id number with passing it into the url
+     * */
 
     @GetMapping("/product/{ProductId}/product")
     public ResponseEntity<ApiResponse> getProductById(@PathVariable Long ProductId) {

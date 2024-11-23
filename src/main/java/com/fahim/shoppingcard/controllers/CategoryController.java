@@ -21,6 +21,9 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
+    /**
+     * This is the mother class and it relation with the Product
+     * */
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addCategory(@RequestBody Category category) {
         try{
