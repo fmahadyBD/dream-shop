@@ -44,7 +44,11 @@ public class CategoryController {
         }
     }
 
-    @GetMapping("/category/{categoryId}/category")
+
+    /**
+     * If Category By name and Category By id will same url then it will show: IllegalStateException
+     * */
+    @GetMapping("/category/id/{categoryId}")
     public ResponseEntity<ApiResponse> getCategoryById(@PathVariable  Long categoryId) {
         try{
             Category category = categoryService.findCategoryById(categoryId);
@@ -54,7 +58,7 @@ public class CategoryController {
         }
     }
 
-    @GetMapping("/category/{categoryName}/category")
+    @GetMapping("/category/name/{categoryName}")
     public ResponseEntity<ApiResponse> getCategoryByeName(@PathVariable String categoryName){
         try{
             Category thecategory = categoryService.findCategoryByName(categoryName);
@@ -65,7 +69,7 @@ public class CategoryController {
     }
 
 
-    @DeleteMapping("/category/{categoryId}/delete")
+    @DeleteMapping("/category/delete/id/{categoryId}")
     public ResponseEntity<ApiResponse> deleteCategory(@PathVariable Long categoryId){
         try{
             categoryService.deleteCategory(categoryId);
@@ -75,7 +79,7 @@ public class CategoryController {
         }
     }
 
-    @PutMapping("category/{categoryId}/update")
+    @PutMapping("category/update/id/{categoryId}")
     public ResponseEntity<ApiResponse> updateCategory(@PathVariable Long categoryId, @RequestBody Category category){
         try{
             Category updateCategory = categoryService.updateCategory(category,categoryId);
