@@ -8,7 +8,7 @@ import java.math.BigInteger;
 
 @Data
 public class AddProductRequest {
-    private long id;
+//    private long id;
     private String name;
     private BigDecimal price;
     private String brand;
