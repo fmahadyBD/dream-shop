@@ -37,3 +37,138 @@ url:http://localhost:8080/authenticate
 
 Request:
 http://localhost:8080/authenticate
+CREATE TABLE audit_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    action VARCHAR(10) NOT NULL,
+    user_id BIGINT NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    description VARCHAR(255)
+);
+
+
+DELIMITER $$
+
+CREATE TRIGGER after_user_insert
+AFTER INSERT ON my_user
+FOR EACH ROW
+BEGIN
+    INSERT INTO audit_logs (action, user_id, description)
+    VALUES ('INSERT', NEW.userid, CONCAT('User ', NEW.first_name, ' ', NEW.last_name, ' added.'));
+END$$
+
+DELIMITER ;
+
+//
+Insert Data:
+-- Insert Categories (if not already inserted)
+INSERT INTO category (name) VALUES ('Electronics');
+INSERT INTO category (name) VALUES ('Clothing');
+INSERT INTO category (name) VALUES ('Home Appliances');
+INSERT INTO category (name) VALUES ('Furniture');
+INSERT INTO category (name) VALUES ('Sports');
+INSERT INTO category (name) VALUES ('Beauty');
+INSERT INTO category (name) VALUES ('Books');
+INSERT INTO category (name) VALUES ('Toys');
+INSERT INTO category (name) VALUES ('Groceries');
+
+-- Insert Products for each Category
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Smartphone', 300.00, 'BrandX', 100, 'Latest model smartphone with 6GB RAM', 1);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Laptop', 800.00, 'BrandY', 50, 'Powerful laptop with 16GB RAM', 1);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Wireless Headphones', 150.00, 'BrandZ', 120, 'Noise-canceling over-ear headphones', 1);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Smartwatch', 200.00, 'BrandW', 80, 'Fitness tracking smartwatch', 1);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('4K Television', 500.00, 'BrandV', 30, 'Ultra HD LED TV', 1);
+
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('T-shirt', 20.00, 'BrandA', 200, 'Cotton t-shirt available in various sizes', 2);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Jeans', 40.00, 'BrandB', 150, 'Slim fit jeans', 2);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Jacket', 60.00, 'BrandC', 70, 'Winter jacket for cold weather', 2);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Sweater', 30.00, 'BrandD', 90, 'Cozy sweater for winter', 2);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Cap', 15.00, 'BrandE', 120, 'Baseball cap', 2);
+
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Refrigerator', 300.00, 'BrandF', 40, 'Energy-efficient fridge with a freezer compartment', 3);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Microwave', 100.00, 'BrandG', 60, 'Microwave oven with quick cook modes', 3);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Washing Machine', 400.00, 'BrandH', 25, 'Automatic washing machine with smart functions', 3);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Air Conditioner', 600.00, 'BrandI', 15, 'Portable air conditioner for summer cooling', 3);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Blender', 50.00, 'BrandJ', 100, 'High-speed blender for smoothies', 3);
+
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Sofa', 500.00, 'BrandK', 10, 'Comfortable sofa for living room', 4);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Dining Table', 250.00, 'BrandL', 20, 'Wooden dining table for 6 people', 4);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Armchair', 150.00, 'BrandM', 30, 'Luxurious armchair for reading room', 4);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Bookshelf', 120.00, 'BrandN', 50, 'Wooden bookshelf for storing books', 4);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Bed Frame', 400.00, 'BrandO', 40, 'Queen-size bed frame', 4);
+
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Tennis Racket', 50.00, 'BrandP', 60, 'Professional tennis racket', 5);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Yoga Mat', 25.00, 'BrandQ', 120, 'Non-slip yoga mat', 5);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Football', 20.00, 'BrandR', 100, 'High-quality football for outdoor games', 5);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Running Shoes', 70.00, 'BrandS', 80, 'Comfortable running shoes for daily exercise', 5);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Dumbbells', 40.00, 'BrandT', 150, 'Adjustable dumbbells for home gym', 5);
+
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Lipstick', 25.00, 'BrandU', 100, 'Red lipstick for daily wear', 6);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Shampoo', 15.00, 'BrandV', 120, 'Organic shampoo for hair care', 6);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Face Cream', 30.00, 'BrandW', 150, 'Moisturizing face cream for dry skin', 6);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Perfume', 50.00, 'BrandX', 80, 'Floral scented perfume', 6);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Nail Polish', 10.00, 'BrandY', 200, 'Nail polish in various colors', 6);
+
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Novel', 12.00, 'BrandZ', 100, 'Fictional novel for readers', 7);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Textbook', 50.00, 'BrandA', 50, 'Mathematics textbook for college students', 7);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Biography', 20.00, 'BrandB', 75, 'Biography of a famous personality', 7);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Science Journal', 30.00, 'BrandC', 120, 'Latest issue of science journal', 7);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Cookbook', 18.00, 'BrandD', 150, 'Healthy cooking recipes book', 7);
+
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Action Figure', 25.00, 'BrandE', 100, 'Collectible action figure from a popular movie', 8);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Board Game', 30.00, 'BrandF', 80, 'Fun family board game', 8);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Puzzle', 15.00, 'BrandG', 120, 'Challenging jigsaw puzzle for adults', 8);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Plush Toy', 10.00, 'BrandH', 150, 'Soft plush toy for children', 8);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Action Camera', 200.00, 'BrandI', 60, 'Waterproof action camera for outdoor adventures', 8);
+
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Cereal', 5.00, 'BrandJ', 500, 'Healthy breakfast cereal', 9);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Milk', 2.50, 'BrandK', 1000, 'Organic full-fat milk', 9);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Rice', 3.00, 'BrandL', 200, 'Basmati rice', 9);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Cooking Oil', 8.00, 'BrandM', 150, 'Vegetable cooking oil', 9);
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Sugar', 1.50, 'BrandN', 500, 'Refined sugar', 9);
+
+

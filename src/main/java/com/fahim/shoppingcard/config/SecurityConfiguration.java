@@ -1,6 +1,6 @@
 package com.fahim.shoppingcard.config;
 
-import com.fahim.shoppingcard.admin.services.userdetails.MyUserDetailsService;
+import com.fahim.shoppingcard.services.userdetails.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -61,6 +61,14 @@ public class SecurityConfiguration {
                 .build();
 
     }
+
+    // Desable the security system for now:
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+//        return httpSecurity.csrf(AbstractHttpConfigurer::disable)
+//                .authorizeHttpRequests(registry -> registry.anyRequest().permitAll())
+//                .build();
+//    }
 
 
 }

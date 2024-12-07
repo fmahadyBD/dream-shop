@@ -1,6 +1,7 @@
 ---
 
 # **Dream Shop**
+
 ---
 
 ## **How to Run**
@@ -291,7 +292,7 @@
 
 ---
 
-## Product API Documentation
+## **Product API Documentation**
 
 ### Add New Product
 **URL:** `http://localhost:8080/admin/api/v1/products/add`  
@@ -387,85 +388,3 @@
   }
 }
 ```
-
----
-
-### Get Product By Name
-**URL:** `http://localhost:8080/admin/api/v1/products/products/name/{name}`  
-**Method:** GET
-
-#### Example:
-**URL:** `http://localhost:8080/admin/api/v1/products/products/name/Laptop`  
-**Response:**
-```json
-{
-  "message": "Found!",
-  "data": [
-    {
-      "id": 1,
-      "name": "Laptop",
-      "price": 1200.00,
-      "brand": "Dell",
-      "inventory": 50,
-      "description": "High-performance Dell Laptop",
-      "images": []
-    }
-  ]
-}
-```
-
----
-
-### Update Product By ID
-**URL:** `http://localhost:8080/admin/api/v1/products/product/update/id/{id}`  
-**Method:** PUT
-
-#### Request Body:
-```json
-{
-  "name": "Laptop",
-  "price": 1200.00,
-  "brand": "Lenovo",
-  "inventory": 50,
-  "description": "High-performance Dell Laptop",
-  "category": {
-    "name": "Electronics"
-  }
-}
-```
-
-#### Example:
-**URL:** `http://localhost:8080/admin/api/v1/products/product/update/id/1`
-#### Response:
-```json
-{
-  "message": "Update successful",
-  "data": {
-    "id": 1,
-    "name": "Laptop",
-    "price": 1200.00,
-    "brand": "Lenovo",
-    "inventory": 50,
-    "description": "High-performance Dell Laptop",
-    "images": []
-  }
-}
-```
-
----
-
-### Delete Product By ID
-**URL:** `http://localhost:8080/admin/api/v1/products/product/delete/id/{id}`  
-**Method:** DELETE
-
-#### Example:
-**URL:** `http://localhost:8080/admin/api/v1/products/product/delete/id/1`
-#### Response:
-```json
-{
-  "message": "Deleted product",
-  "data": 1
-}
-```
-
----
