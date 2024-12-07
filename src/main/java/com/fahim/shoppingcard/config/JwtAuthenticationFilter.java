@@ -1,7 +1,7 @@
 package com.fahim.shoppingcard.config;
 
-import com.fahim.shoppingcard.services.userdetails.JwtService;
-import com.fahim.shoppingcard.services.userdetails.MyUserDetailsService;
+import com.fahim.shoppingcard.admin.services.userdetails.JwtService;
+import com.fahim.shoppingcard.admin.services.userdetails.MyUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

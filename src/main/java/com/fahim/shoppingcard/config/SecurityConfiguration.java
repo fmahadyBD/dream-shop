@@ -1,6 +1,6 @@
 package com.fahim.shoppingcard.config;
 
-import com.fahim.shoppingcard.services.userdetails.MyUserDetailsService;
+import com.fahim.shoppingcard.admin.services.userdetails.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
