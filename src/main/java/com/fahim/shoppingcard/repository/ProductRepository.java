@@ -36,9 +36,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Long countByBrandAndName(String brand, String name);
 
 
-
-
-
     //-------------->>
     @Query(value = "SELECT COUNT(*) FROM product WHERE category_id = :id", nativeQuery = true)
     Long countByCategoryName(Long id);

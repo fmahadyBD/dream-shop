@@ -172,3 +172,15 @@ INSERT INTO product (name, price, brand, inventory, description, category_id)
 VALUES ('Sugar', 1.50, 'BrandN', 500, 'Refined sugar', 9);
 
 
+
+
+
+
+
+
+\begin{figure}[h]
+        \begin{center}
+         \includegraphics[scale=0.9]{Figures/a1.jpg}
+        \end{center}
+        \caption{Database Schema}
+     \end{figure}

@@ -1,0 +1,218 @@
+
+CREATE TABLE Category (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+
+CREATE TABLE MyUser (
+    userid BIGINT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    userRole VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Product (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    brand VARCHAR(255) NOT NULL,
+    inventory INT NOT NULL,
+    description VARCHAR(500),
+    category_id BIGINT,
+    FOREIGN KEY (category_id) REFERENCES Category(id)
+);
+
+
+CREATE TABLE Image (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    fileName VARCHAR(255) NOT NULL,
+    fileType VARCHAR(255) NOT NULL,
+    image BLOB, -- Using BLOB for image data
+    downloadUrl VARCHAR(255),
+    product_id BIGINT,
+    FOREIGN KEY (product_id) REFERENCES Product(id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE Cart (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    totalAmount DECIMAL(10, 2) DEFAULT 0
+);
+
+
+CREATE TABLE CartItem (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    quantity INT NOT NULL,
+    unitPrice DECIMAL(10, 2),
+    totalPrice DECIMAL(10, 2),
+    product_id BIGINT,
+    cart_id BIGINT,
+    FOREIGN KEY (product_id) REFERENCES Product(id),
+    FOREIGN KEY (cart_id) REFERENCES Cart(id) ON DELETE CASCADE
+);
+
+----------------------------------------
+Triggers
+CREATE TABLE audit_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    action VARCHAR(10) NOT NULL,
+    user_id BIGINT NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    description VARCHAR(255)
+);
+
+
+DELIMITER $$
+
+CREATE TRIGGER after_user_insert
+AFTER INSERT ON my_user
+FOR EACH ROW
+BEGIN
+    INSERT INTO audit_logs (action, user_id, description)
+    VALUES ('INSERT', NEW.userid, CONCAT('User ', NEW.first_name, ' ', NEW.last_name, ' added.'));
+END$$
+
+DELIMITER ;
+
+---------------------------------------------------------------------------
+
+
+
+Product:
+-- Sample query for inserting into Category table
+INSERT INTO category (name) VALUES ('Electronics');
+INSERT INTO category (name) VALUES ('Clothing');
+
+-- Sample query for inserting into Product table
+INSERT INTO product (name, price, brand, inventory, description, category_id)
+VALUES ('Smartphone', 499.99, 'BrandX', 100, 'Latest smartphone with high performance', 1);
+
+-- Sample query for inserting into Image table
+INSERT INTO image (file_name, file_type, image, download_url, product_id)
+VALUES ('smartphone.jpg', 'image/jpeg', NULL, 'https://example.com/smartphone.jpg', 1);
+
+-- Retrieve all products with their category and images
+SELECT p.id, p.name, p.price, p.brand, p.inventory, p.description, c.name AS category_name, i.file_name AS image_file_name, i.download_url
+FROM product p
+JOIN category c ON p.category_id = c.id
+LEFT JOIN image i ON p.id = i.product_id;
+
+-------------
+
+
+
+Image:
+-- Sample query for inserting an image
+INSERT INTO image (file_name, file_type, image, download_url, product_id)
+VALUES ('smartphone.jpg', 'image/jpeg', NULL, '/api/v1/images/image/download/1', 1);
+
+-- Sample query for updating an image
+UPDATE image
+SET file_name = 'smartphone_updated.jpg', file_type = 'image/jpeg', image = NULL, download_url = '/api/v1/images/image/download/2'
+WHERE id = 1;
+
+-- Sample query for deleting an image by ID
+DELETE FROM image WHERE id = 1;
+
+-- Retrieve all images associated with a product
+SELECT * FROM image WHERE product_id = 1;
+
+
+
+
+
+Categgory:
+
+-- Insert a new category
+INSERT INTO Category (name)
+VALUES ('Electronics');
+
+-- Select all categories
+SELECT * FROM Category;
+
+-- Select a category by ID
+SELECT * FROM Category
+WHERE id = 1;
+
+-- Select a category by name
+SELECT * FROM Category
+WHERE name = 'Electronics';
+
+-- Update an existing category's name
+UPDATE Category
+SET name = 'Home Appliances'
+WHERE id = 1;
+
+-- Delete a category by ID
+DELETE FROM Category
+WHERE id = 1;
+
+-- Check if a category name exists (to simulate the logic of `existsByName` in your service)
+SELECT COUNT(*)
+FROM Category
+WHERE name = 'Electronics';
+
+
+
+Cart:
+
+-- Insert a sample Cart
+INSERT INTO Cart (totalAmount)
+VALUES (0.00);
+
+-- Insert a sample Product
+INSERT INTO Product (name, price)
+VALUES ('Laptop', 1000.00);
+
+-- Insert a sample CartItem for the Cart and Product
+INSERT INTO CartItem (cart_id, product_id, quantity, unitPrice, totalPrice)
+VALUES (1, 1, 2, 1000.00, 2000.00);
+
+-- Update the total amount for a Cart (sum of all item total prices)
+UPDATE Cart
+SET totalAmount = (
+    SELECT SUM(totalPrice) FROM CartItem WHERE cart_id = Cart.id
+)
+WHERE id = 1;
+
+-- Select all CartItems in a specific Cart
+SELECT * FROM CartItem WHERE cart_id = 1;
+
+-- Select the total price of a Cart
+SELECT totalAmount FROM Cart WHERE id = 1;
+
+-- Remove an item from the Cart
+DELETE FROM CartItem WHERE cart_id = 1 AND product_id = 1;
+
+-- Delete a Cart (this will also delete associated CartItems due to cascading delete)
+DELETE FROM Cart WHERE id = 1;
+
+
+
+
+
+
+MyUser:
+
+-- Insert a sample user
+INSERT INTO MyUser (username, email, password, first_name, last_name, role)
+VALUES ('johndoe', 'johndoe@example.com', 'encrypted_password_here', 'John', 'Doe', 'USER');
+
+-- Select all users
+SELECT * FROM MyUser;
+
+-- Select a specific user by username
+SELECT * FROM MyUser WHERE username = 'johndoe';
+
+-- Update user information
+UPDATE MyUser SET email = 'newemail@example.com' WHERE id = 1;
+
+-- Delete a user by ID
+DELETE FROM MyUser WHERE id = 1;
+
+
+
+
